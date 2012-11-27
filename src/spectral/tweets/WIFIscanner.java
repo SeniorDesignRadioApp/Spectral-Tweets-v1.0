@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
+import android.widget.Toast;
 
 public class WIFIscanner extends BroadcastReceiver {
 
@@ -148,6 +149,7 @@ public class WIFIscanner extends BroadcastReceiver {
 		}
 		
 		/* set the flag so GPSscanner knows it can update the display */
+		Toast.makeText(context, "Got WIFI Info", Toast.LENGTH_LONG).show();
 		Twitter_Test_AppActivity.wifi_info = str;
 		Twitter_Test_AppActivity.ready_flag = true;
 	}

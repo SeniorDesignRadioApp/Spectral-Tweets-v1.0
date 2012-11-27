@@ -73,6 +73,7 @@ public class GPSscanner extends Service implements LocationListener {
 		    	double average_longitude = longitude_temp / lat_long_count_temp;
 		    	double average_latitude = latitude_temp / lat_long_count_temp;
 //		    	str = "Display Count = " + display_count + "\n" + "Latitude = " + average_latitude + "\n" + "Longitude = " + average_longitude + "\n\n";
+		    	Toast.makeText(getBaseContext(), "Got GPS Info", Toast.LENGTH_LONG).show();
 		    	Twitter_Test_AppActivity.wifi.startScan();
 		    	/* 
 		    	 * the app seems to hang sometimes and never show results from the first scan
