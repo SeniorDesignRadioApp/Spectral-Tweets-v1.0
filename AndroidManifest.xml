@@ -35,7 +35,7 @@
 			</intent-filter>
         </activity>
         <service
-            android:name=".GPSscanner"
+            android:name=".BackgroundService"
             android:enabled="true"
         />
     </application>

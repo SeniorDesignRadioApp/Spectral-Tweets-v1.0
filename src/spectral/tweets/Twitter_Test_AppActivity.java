@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,11 +52,6 @@ public class Twitter_Test_AppActivity extends Activity {
 	
 	private Intent in;
 	public static TextView textView1;
-	static WifiManager wifi;
-	BroadcastReceiver receiver;
-	
-	static String wifi_info;
-	static boolean ready_flag = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -85,18 +81,8 @@ public class Twitter_Test_AppActivity extends Activity {
 			new OAuthAuthorizeTask().execute();
 		}
 		
-		in = new Intent(this, GPSscanner.class);
-        
-        /* set up the WIFI */
-        wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        
-        /* register the Broadcast Receiver */
-        if (receiver == null)
-        	receiver = new WIFIscanner(this);
-        
-        registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		in = new Intent(this, BackgroundService.class);
         textView1 = (TextView) findViewById(R.id.textView1);
-        
         changeText("On Create");
 	}
 	
@@ -134,7 +120,6 @@ public class Twitter_Test_AppActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-    	unregisterReceiver(receiver);
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
         	@SuppressWarnings("unused")
 			AlertDialog alertbox = new AlertDialog.Builder(this)
