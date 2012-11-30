@@ -28,6 +28,7 @@ public class BackgroundService extends Service implements LocationListener
 {
 	private static Timer repeater = new Timer();
 	private static LocationManager lm;
+	private getInfoAndTweet getAndTweet = this.new getInfoAndTweet();
 	
 	private static final int MIN_TIME_MILLISECONDS = 0;
 	private static final int MIN_DIST_METERS = 0;
@@ -35,6 +36,7 @@ public class BackgroundService extends Service implements LocationListener
 	private double temp_long = 0.0;
 	private double temp_lat = 0.0;
 	private int temp_count = 0;
+	private boolean thread_running = false;
 	
 
 	@Override
@@ -55,6 +57,7 @@ public class BackgroundService extends Service implements LocationListener
 	{
 		repeater.cancel();
 		lm.removeUpdates(this);
+		unregisterReceiver(getAndTweet.receiver);
 		Toast.makeText(getApplicationContext(), "Location display is off", Toast.LENGTH_SHORT).show();
     	temp_lat = 0;
 		temp_long = 0;
@@ -63,7 +66,7 @@ public class BackgroundService extends Service implements LocationListener
 	
 	private void startService()
 	{
-		repeater.scheduleAtFixedRate(new getInfoAndTweet(), 0, frequency);
+		repeater.scheduleAtFixedRate(getAndTweet, 0, frequency);
 	}
 	
 	/* this class will contain all of the GPS and WIFI classes so that none of that stuff clogs up the main thread */
@@ -216,12 +219,14 @@ public class BackgroundService extends Service implements LocationListener
 				{
 					Twitter_Test_AppActivity.changeText(count + "\tno new GPS info");
 				}
+				thread_running = false;
 			}
 			
 		}
 		
 		public void run()
 		{
+			thread_running = true;
 	        wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 	        if (receiver == null)
 	        {
@@ -239,9 +244,12 @@ public class BackgroundService extends Service implements LocationListener
 	}
 
 	public void onLocationChanged(Location location) {
-		temp_lat += location.getLatitude();
-		temp_long += location.getLongitude();
-		temp_count ++;
+		if (thread_running)
+		{
+			temp_lat += location.getLatitude();
+			temp_long += location.getLongitude();
+			temp_count ++;
+		}
 	}
 
 	public void onProviderDisabled(String provider) {
