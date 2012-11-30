@@ -39,7 +39,6 @@ public class BackgroundService extends Service implements LocationListener
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -204,12 +203,19 @@ public class BackgroundService extends Service implements LocationListener
 				}
 				
 				final_string = hashtag + wifi_info + gps_info;
-		    	if(Twitter_Test_AppActivity.twitter != null) {
-		    		Twitter_Test_AppActivity.twitter.setStatus(final_string);
-		    		Twitter_Test_AppActivity.changeText("Auto Tweet Sent: " + count + "\t" + final_string);
-		    	} else {
-		    		Twitter_Test_AppActivity.changeText("Tweet not sent");
-		    	}
+				if (temp_count != 0)
+				{
+					if(Twitter_Test_AppActivity.twitter != null) {
+						Twitter_Test_AppActivity.twitter.setStatus(final_string);
+						Twitter_Test_AppActivity.changeText("Auto Tweet Sent: " + count + "\t" + final_string);
+					} else {
+						Twitter_Test_AppActivity.changeText("Tweet not sent");
+					}
+				}
+				else
+				{
+					Twitter_Test_AppActivity.changeText(count + "\tno new GPS info");
+				}
 			}
 			
 		}
